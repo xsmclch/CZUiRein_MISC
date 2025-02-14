@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="CZUi@https://space.bilibili.com/398537367">
+    <meta name="source-code" content="https://github.com/xsmclch/CZUiRein_MISC">
+    <title>三位天数倒计时</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&family=Noto+Sans+PhagsPa&family=Noto+Sans+SC:wght@100..900&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: "Noto Sans SC", serif;
+            font-size: 7vw;
+        }
+
+        body {
+            background-image: url(image.png);
+            background-size: cover;
+            background-repeat: no-repeat;
+            color: #f4f4f4;
+        }
+
+        h1 {
+            margin-top: 15vh;
+            text-align: center;
+            color: white;
+        }
+
+        .flip-card {
+            position: relative;
+            display: inline-flex;
+            flex-direction: column;
+            box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .2);
+            border-radius: .1em;
+        }
+
+        .top,
+        .bottom,
+        .flip-card .top-flip,
+        .flip-card .bottom-flip {
+            height: .75em;
+            line-height: 1;
+            padding: .25em;
+            overflow: hidden;
+        }
+
+        .top,
+        .flip-card .top-flip {
+            background-color: #061833;
+            border-radius: .1em .1em 0 0;
+            border-bottom: 1px solid rgba(0, 0, 0, .1);
+        }
+
+        .bottom,
+        .flip-card .bottom-flip {
+            background-color: #364469;
+            display: flex;
+            align-items: flex-end;
+            border-radius: 0 0 .1em .1em;
+        }
+
+        .flip-card .top-flip {
+            position: absolute;
+            width: 100%;
+            animation: flip-top 250ms ease-in;
+            transform-origin: bottom;
+        }
+
+        @keyframes flip-top {
+            100% {
+                transform: rotateX(90deg);
+            }
+        }
+
+        .flip-card .bottom-flip {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            animation: flip-bottom 250ms ease-in 250ms;
+            transform-origin: top;
+            transform: rotateX(90deg);
+        }
+
+        @keyframes flip-bottom {
+            100% {
+                transform: rotateX(0deg);
+            }
+        }
+
+        .container {
+            padding: 1vw;
+            border-radius: 0.5vw;
+            position: absolute;
+            top: 40vh;
+            left: 50%;
+            transform: translate(-50%);
+            display: flex;
+            backdrop-filter: blur(20px);
+            gap: .5em;
+            justify-content: center;
+        }
+
+        .container-segment {
+            display: flex;
+            flex-direction: column;
+            gap: .1em;
+            align-items: center;
+        }
+
+        .segment {
+            display: flex;
+            gap: .1em;
+        }
+
+        .segment-title {
+            font-size: 3vw;
+        }
+
+        @media only screen and (max-width: 768px) {
+            body {
+                background-image: url(image2.jpg);
+            }
+
+            .top,
+            .flip-card .top-flip {
+                border-bottom: 1px solid rgba(1, 22, 31, 0.1);
+            }
+
+            h1 {
+                color: aliceblue;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<h1 class="title">2027 Countdown</h1>
+<div class="container">
+    <div class="container-segment">
+        <div class="segment">
+            <div class="flip-card" data-days-hundreds>
+                <div class="top">9</div>
+                <div class="bottom">9</div>
+            </div>
+            <div class="flip-card" data-days-tens>
+                <div class="top">9</div>
+                <div class="bottom">9</div>
+            </div>
+            <div class="flip-card" data-days-ones>
+                <div class="top">9</div>
+                <div class="bottom">9</div>
+            </div>
+        </div>
+        <div class="segment-title">Days</div>
+    </div>
+    <div class="container-segment">
+        <div class="segment">
+            <div class="flip-card" data-hours-tens>
+                <div class="top">2</div>
+                <div class="bottom">2</div>
+            </div>
+            <div class="flip-card" data-hours-ones>
+                <div class="top">3</div>
+                <div class="bottom">3</div>
+            </div>
+        </div>
+        <div class="segment-title">Hours</div>
+    </div>
+    <div class="container-segment">
+        <div class="segment">
+            <div class="flip-card" data-minutes-tens>
+                <div class="top">5</div>
+                <div class="bottom">5</div>
+            </div>
+            <div class="flip-card" data-minutes-ones>
+                <div class="top">9</div>
+                <div class="bottom">9</div>
+            </div>
+        </div>
+        <div class="segment-title">Minutes</div>
+    </div>
+    <div class="container-segment">
+        <div class="segment">
+            <div class="flip-card" data-seconds-tens>
+                <div class="top">5</div>
+                <div class="bottom">5</div>
+            </div>
+            <div class="flip-card" data-seconds-ones>
+                <div class="top">9</div>
+                <div class="bottom">9</div>
+            </div>
+        </div>
+        <div class="segment-title">Seconds</div>
+    </div>
+</div>
+<script>
+    let aimDay = new Date(2027, 0, 1);
+
+    function setSpringFes() {
+        aimDay = new Date(2025, 0, 29);
+        const title = document.querySelector("h1");
+        title.textContent = "春节倒计时";
+    }
+
+    setInterval(() => {
+        const now = new Date();
+        const dt = Math.ceil((aimDay - now) / 1000);
+        if (dt <= 0) {
+            setSpringFes();
+            return;
+        }
+        flipAllCards(dt);
+    }, 1000);
+
+    const days_hundreds = document.querySelector("[data-days-hundreds]");
+    const days_tens = document.querySelector("[data-days-tens]");
+    const days_ones = document.querySelector("[data-days-ones]");
+    const hours_tens = document.querySelector("[data-hours-tens]");
+    const hours_ones = document.querySelector("[data-hours-ones]");
+    const minutes_tens = document.querySelector("[data-minutes-tens]");
+    const minutes_ones = document.querySelector("[data-minutes-ones]");
+    const seconds_tens = document.querySelector("[data-seconds-tens]");
+    const seconds_ones = document.querySelector("[data-seconds-ones]");
+
+    function flipAllCards(time) {
+        const seconds = time % 60;
+        const minutes = Math.floor(time / 60) % 60;
+        const hours = Math.floor(time / 3600) % 24;
+        const days = Math.floor(time / 86400);
+
+        flip(days_hundreds, Math.floor(days / 100));
+        flip(days_tens, Math.floor(days % 100 / 10));
+        flip(days_ones, days % 10);
+        flip(hours_tens, Math.floor(hours / 10));
+        flip(hours_ones, hours % 10);
+        flip(minutes_tens, Math.floor(minutes / 10));
+        flip(minutes_ones, minutes % 10);
+        flip(seconds_tens, Math.floor(seconds / 10));
+        flip(seconds_ones, seconds % 10);
+    }
+
+    console.clear();
+    console.info("%cFor learning only.\nMore info -> https://space.bilibili.com/398537367", "font-size:1.5rem;color:violet")
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "F12")
+            e.preventDefault();
+    });
+
+    function flip(flipCard, newNumber) {
+        const topHalf = flipCard.querySelector(".top");
+        const bottomHalf = flipCard.querySelector(".bottom");
+        const startNumber = parseInt(topHalf.textContent);
+        if (newNumber === startNumber) return;
+
+        const topFlip = document.createElement("div");
+        topFlip.classList.add("top-flip");
+        const bottomFlip = document.createElement("div");
+        bottomFlip.classList.add("bottom-flip");
+
+        topHalf.textContent = startNumber;
+        bottomHalf.textContent = startNumber;
+        topFlip.textContent = startNumber;
+        bottomFlip.textContent = newNumber;
+
+        topFlip.addEventListener("animationstart", e => {
+            topHalf.textContent = newNumber;
+        });
+
+        topFlip.addEventListener("animationend", e => {
+            topFlip.remove();
+        });
+
+        bottomFlip.addEventListener("animationend", e => {
+            bottomHalf.textContent = newNumber;
+            bottomFlip.remove();
+        });
+        flipCard.append(topFlip, bottomFlip);
+    }
+
+</script>
+</body>
+
+</html>
