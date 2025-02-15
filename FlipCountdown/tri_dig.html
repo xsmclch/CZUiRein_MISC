@@ -135,6 +135,10 @@
                 color: aliceblue;
             }
         }
+
+        .flip-card.hidden {
+            display: none;
+        }
     </style>
 </head>
 
@@ -199,7 +203,7 @@
     </div>
 </div>
 <script>
-    let aimDay = new Date(2027, 0, 1);
+    let aimDay = new Date(2025, 4, 1);
 
     function setSpringFes() {
         aimDay = new Date(2025, 0, 29);
@@ -232,6 +236,10 @@
         const minutes = Math.floor(time / 60) % 60;
         const hours = Math.floor(time / 3600) % 24;
         const days = Math.floor(time / 86400);
+
+        if (days < 100) {
+            days_hundreds.classList.add("hidden");
+        }
 
         flip(days_hundreds, Math.floor(days / 100));
         flip(days_tens, Math.floor(days % 100 / 10));
